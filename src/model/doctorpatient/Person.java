@@ -1,5 +1,7 @@
 package model.doctorpatient;
 
+import java.util.List;
+
 public class Person {
 	private int personId;
 	private String personNumber;
@@ -8,11 +10,25 @@ public class Person {
 	private String lastName;
 	private String contactPhone;
 	private String address;
+	private List<Specialization> specialization;
 	public Person() {}
 	
 	public Person(int personId) {
 		super();
 		this.personId = personId;
+	}
+
+	public Person(int personId, String personNumber, String firstName, String middleName, String lastName,
+			String contactPhone, String address, List<Specialization> specialization) {
+		super();
+		this.personId = personId;
+		this.personNumber = personNumber;
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.lastName = lastName;
+		this.contactPhone = contactPhone;
+		this.address = address;
+		this.specialization = specialization;
 	}
 
 	public Person(int personId, String personNumber, String firstName, String middleName, String lastName,
@@ -87,5 +103,13 @@ public class Person {
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public List<Specialization> getSpecialization() {
+		return specialization;
+	}
+
+	public void setSpecialization(List<Specialization> specialization) {
+		this.specialization = specialization;
 	}
 }

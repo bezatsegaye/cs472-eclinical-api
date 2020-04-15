@@ -7,6 +7,7 @@ import java.util.List;
 
 import dao.Database;
 import model.doctorpatient.Person;
+import model.doctorpatient.Specialization;
 
 public class DoctorRepository {
 	private static DoctorRepository doctorRepository;
@@ -37,16 +38,19 @@ public class DoctorRepository {
 	}
 	public List<Person> loadDoctors() {
 		List<Person> doctors = new ArrayList<>();
+		DoctorSpecializationRepository doctorSpecializationRepo = DoctorSpecializationRepository.getInstance();
 		try {
 			ResultSet result = database.getResult("SELECT * FROM doctor", null);
 			while(result.next()) {
+				List<Specialization> specializations = doctorSpecializationRepo.loadDoctorSpecializations(result.getInt(1));
 				doctors.add(new Person(result.getInt(1), 
 										result.getString(2), 
 										result.getString(3), 
 										result.getString(4), 
 										result.getString(5), 
 										result.getString(6), 
-										result.getString(7)));
+										result.getString(7),
+										specializations));
 			}
 		}catch(Exception ex) {
 			ex.printStackTrace();

@@ -49,6 +49,18 @@ public class DoctorSpecializationRepository {
 		}
 		return doctorSpecializations;
 	}
+	public List<Specialization> loadDoctorSpecializations(int doctorId) {
+		List<Specialization> doctorSpecializations = new ArrayList<>();
+		SpecializationRepository specializationRepo = SpecializationRepository.getInstance();
+		try {
+			ResultSet result = database.getResult("SELECT * FROM doctor_specialization WHERE doctor_id = ?", Arrays.asList(doctorId));
+			while(result.next()) 
+				doctorSpecializations.add(specializationRepo.loadSpecializationById(result.getInt("specialization_id")));
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return doctorSpecializations;
+	}
 	public boolean deleteDoctorSpecializationById(int doctorSpecializationId) {
 		boolean isSuccess = false;
 		try {
