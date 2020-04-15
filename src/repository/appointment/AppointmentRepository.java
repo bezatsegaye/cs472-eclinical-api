@@ -1,6 +1,8 @@
 package repository.appointment;
 
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -85,6 +87,35 @@ public class AppointmentRepository {
 		}
 		return appointment;
 	}
+	public List<LocalTime> checkAvailability(LocalDate appointmentDate) {
+		List<LocalTime> localTimes = new ArrayList<LocalTime>();
+		localTimes.add(LocalTime.of(10, 00));
+		localTimes.add(LocalTime.of(11, 00));
+		localTimes.add(LocalTime.of(12, 00));
+		
+		localTimes.add(LocalTime.of(14, 00));
+		localTimes.add(LocalTime.of(15, 00));
+		localTimes.add(LocalTime.of(16, 00));
+		localTimes.add(LocalTime.of(17, 00));
+		
+		ResultSet result = database.getResult("SELECT appointmentime FROM appointment where appointmentdate = ?", Arrays.asList(appointmentDate));
+		if(result != null) {
+			try {
+				while(result.next()) {
+					LocalTime appointmentTime = result.getTime(1).toLocalTime();
+					for(int i=0; i<localTimes.size(); i++)
+						if(appointmentTime.equals(localTimes.get(i))) {
+							localTimes.remove(i);
+							break;
+						}
+				}
+			}catch(Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		return localTimes;
+	}
+	
 	public boolean deleteAppointmentById(int appointmentId) {
 		boolean isSuccess = false;
 		try {
